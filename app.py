@@ -12,8 +12,7 @@ from src.uploader.upload_manager import UploadManager
 from src.uploader.knowledge_mode import KnowledgeMode
 
 from src.ui.styles import load_css
-from src.ui.sidebar import render_sidebar
-from src.ui.status_card import render_status
+from src.ui.sidebar import render_toolbar
 from src.ui.chat import (
     render_chat_input,
     render_chat_history,
@@ -29,7 +28,7 @@ st.set_page_config(
     page_title="RAG Document Chatbot",
     page_icon="📚",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 
@@ -60,38 +59,16 @@ if "chat_history" not in st.session_state:
 
 st.title("📚 RAG Document Chatbot")
 
-st.caption(
-    "Upload a document and ask questions using Retrieval-Augmented Generation (RAG)."
-)
-
 st.divider()
 
 
 # ==========================================
-# Sidebar
+# Toolbar
 # ==========================================
 
-uploaded_files, mode, process_button = render_sidebar()
+uploaded_files, mode, process_button = render_toolbar()
 
-
-# ==========================================
-# Layout
-# ==========================================
-
-chat_col, status_col = st.columns([3, 1])
-
-
-# ==========================================
-# Status Panel
-# ==========================================
-
-with status_col:
-
-    render_status(
-        st.session_state.documents_processed,
-        mode,
-        uploaded_files
-    )
+st.divider()
 
 
 # ==========================================
@@ -150,39 +127,37 @@ is implemented.
 # Chat
 # ==========================================
 
-with chat_col:
+render_chat_history(
+    st.session_state.chat_history
+)
 
-    render_chat_history(
-        st.session_state.chat_history
-    )
+question = render_chat_input()
 
-    question = render_chat_input()
+if question:
 
-    if question:
+    if not st.session_state.documents_processed:
 
-        if not st.session_state.documents_processed:
+        st.warning(
+            "Please process your document first."
+        )
 
-            st.warning(
-                "Please process your document first."
-            )
+    else:
 
-        else:
+        try:
 
-            try:
+            with st.spinner("🤖 Thinking..."):
 
-                with st.spinner("🤖 Thinking..."):
-
-                    answer = st.session_state.chatbot.ask(
-                        question
-                    )
-
-                add_message(
-                    question,
-                    answer
+                answer = st.session_state.chatbot.ask(
+                    question
                 )
 
-                st.rerun()
+            add_message(
+                question,
+                answer
+            )
 
-            except Exception as error:
+            st.rerun()
 
-                st.error(error)
+        except Exception as error:
+
+            st.error(error)

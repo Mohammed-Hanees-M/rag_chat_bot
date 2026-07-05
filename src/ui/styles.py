@@ -37,6 +37,15 @@ visibility:hidden;
 
 
 /* -------------------------------
+   Hide Sidebar
+--------------------------------*/
+
+section[data-testid="stSidebar"]{
+display:none;
+}
+
+
+/* -------------------------------
    Main Page
 --------------------------------*/
 
@@ -51,7 +60,62 @@ padding-right:2rem;
 
 
 /* -------------------------------
-   Sidebar
+   Toolbar Columns - Remove Container Styling
+--------------------------------*/
+
+[data-testid="column"] {
+
+background: transparent !important;
+
+border: none !important;
+
+box-shadow: none !important;
+
+}
+
+
+/* Remove gap/margin around toolbar columns */
+
+[data-testid="column"] > [data-testid="stVerticalBlockBorderWrapper"] {
+
+background: transparent !important;
+
+border: none !important;
+
+box-shadow: none !important;
+
+padding: 0 !important;
+
+}
+
+
+/* Buttons
+--------------------------------*/
+
+.stButton>button{
+
+border-radius:10px;
+
+height:40px;
+
+font-weight:600;
+
+font-size:14px;
+
+}
+
+
+/* Buttons in non-toolbar sections */
+
+button:not(.toolbar-card *) {
+
+border-radius: 8px;
+
+}
+
+
+/* -------------------------------
+   Sidebar (if used)
 --------------------------------*/
 
 section[data-testid="stSidebar"]{
@@ -64,25 +128,6 @@ border-right:1px solid #2d3748;
 
 
 /* -------------------------------
-   Buttons
---------------------------------*/
-
-.stButton>button{
-
-width:100%;
-
-border-radius:10px;
-
-height:46px;
-
-font-weight:600;
-
-font-size:15px;
-
-}
-
-
-/* -------------------------------
    Text Input
 --------------------------------*/
 
@@ -90,18 +135,20 @@ font-size:15px;
 
 border-radius:12px;
 
-padding:14px;
+padding:12px;
+
+font-size:13px;
 
 }
 
 
 /* -------------------------------
-   File Uploader
+   Selectbox
 --------------------------------*/
 
-[data-testid="stFileUploader"]{
+[data-testid="stSelectbox"] {
 
-border-radius:12px;
+border-radius: 8px;
 
 }
 
@@ -113,6 +160,12 @@ border-radius:12px;
 div[data-testid="stAlert"]{
 
 border-radius:12px;
+
+padding: 8px 12px;
+
+font-size: 13px;
+
+margin: 0;
 
 }
 
@@ -138,9 +191,9 @@ margin-bottom:15px;
 
 hr{
 
-margin-top:25px;
+margin-top:12px;
 
-margin-bottom:25px;
+margin-bottom:12px;
 
 }
 
